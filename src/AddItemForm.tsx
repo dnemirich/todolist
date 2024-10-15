@@ -7,44 +7,45 @@ type AddItemFormProps = {
 
 
 export const AddItemForm = ({addItem}: AddItemFormProps) => {
-    const [taskTitle, setTaskTitle] = useState<string>("");
+    const [itemTitle, setItemTitle] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
 
-    const addTaskHandler = () => {
-        if (taskTitle.trim() !== "") {
-            addItem(taskTitle.trim(), props.todolistId);
-            setTaskTitle("");
+    const addItemHandler = () => {
+        if (itemTitle.trim() !== "") {
+
+            addItem(itemTitle.trim());
+            setItemTitle("");
 
         } else {
             setError("Title is required")
         }
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(e.currentTarget.value)
+    const onChangeItemHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setItemTitle(e.currentTarget.value)
     }
 
-    const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const addItemOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null);
         if (e.key === "Enter") {
-            addTaskHandler();
+            addItemHandler();
         }
     }
 
-    const isTitleLengthValid = taskTitle.length < 15;
+    const isTitleLengthValid = itemTitle.length < 15;
 
     return (
         <div>
             <input
-                value={taskTitle}
-                onChange={onChangeHandler}
+                value={itemTitle}
+                onChange={onChangeItemHandler}
                 placeholder={"Title is required"}
-                onKeyUp={onKeyUpHandler}
+                onKeyUp={addItemOnKeyUp}
                 className={error ? "error" : ""}
             />
             <Button
                 title={"+"}
-                onClickHandler={addTaskHandler}
+                onClickHandler={addItemHandler}
                 isDisabled={!isTitleLengthValid}
             />
             {error && <div className={"error-message"}>Title is required</div>}
