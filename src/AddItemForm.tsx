@@ -1,12 +1,14 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button} from "./Button";
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+// import { Button } from "./Button";
+import { IconButton, TextField } from "@mui/material"
+import { AddBox } from '@mui/icons-material';
 
 type AddItemFormProps = {
     addItem: (title: string) => void
 }
 
 
-export const AddItemForm = ({addItem}: AddItemFormProps) => {
+export const AddItemForm = ({ addItem }: AddItemFormProps) => {
     const [itemTitle, setItemTitle] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
 
@@ -36,19 +38,27 @@ export const AddItemForm = ({addItem}: AddItemFormProps) => {
 
     return (
         <div>
-            <input
+            <TextField size='small'
+                label="Title is required"
+                variant="outlined"
+                value={itemTitle}
+                onChange={onChangeItemHandler}
+                onKeyUp={addItemOnKeyUp}
+                error={!!error} />
+            {/* <input
                 value={itemTitle}
                 onChange={onChangeItemHandler}
                 placeholder={"Title is required"}
                 onKeyUp={addItemOnKeyUp}
                 className={error ? "error" : ""}
-            />
-            <Button
+            /> */}
+            <IconButton onClick={addItemHandler} disabled={!isTitleLengthValid}><AddBox></AddBox></IconButton>
+            {/* <Button
                 title={"+"}
                 onClickHandler={addItemHandler}
                 isDisabled={!isTitleLengthValid}
-            />
-            {error && <div className={"error-message"}>Title is required</div>}
+            /> */}
+            {/* {error && <div className={"error-message"}>Title is required</div>} */}
         </div>
     );
 };

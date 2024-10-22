@@ -1,12 +1,13 @@
-.App {
+/* .App {
     padding: 30px;
     display: flex;
-}
+} */
 
-.App > div {
+/* .App>div {
     margin-right: 50px;
-}
+} */
 
+/* 
 .todolist {
     background-color: burlywood;
     border: 2px solid darkgoldenrod;
@@ -33,6 +34,8 @@ button {
     color: white;
     border: none;
 }
+
+*/
 
 .is-done {
     opacity: 0.5;
