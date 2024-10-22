@@ -44,7 +44,9 @@ export const AddItemForm = ({ addItem }: AddItemFormProps) => {
                 value={itemTitle}
                 onChange={onChangeItemHandler}
                 onKeyUp={addItemOnKeyUp}
-                error={!!error} />
+                error={!!error}
+                helperText={error}
+            />
             {/* <input
                 value={itemTitle}
                 onChange={onChangeItemHandler}

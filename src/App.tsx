@@ -3,7 +3,10 @@ import './App.css';
 import { Todolist } from "./Todolist";
 import { v1 } from "uuid";
 import { AddItemForm } from "./AddItemForm";
-import { Container, Grid2 } from '@mui/material';
+import { AppBar, Box, Button, Container, createTheme, CssBaseline, Grid2, IconButton, Switch, ThemeProvider, Toolbar } from '@mui/material';
+import { Menu } from '@mui/icons-material';
+import { MenuButton } from './MenuButton';
+import { lightGreen, pink } from '@mui/material/colors';
 
 export type TaskType = {
     id: string,
@@ -189,52 +192,80 @@ function App() {
         )
     }
 
+
+    const [isDark, setIsDark] = useState(false)
+
+    const theme = createTheme({
+        palette: {
+            primary: lightGreen,
+            secondary: {
+                main: '#3f51b5',
+            },
+            mode: isDark ? "dark" : "light"
+        },
+    })
+
     return (
+        <div className='App'>
+            <ThemeProvider theme={theme}>
+                {/* reset browser default styles */}
+                <CssBaseline />
+                <AppBar position="static">
+                    <Toolbar sx={{ justifyContent: "space-between" }}>
+                        <IconButton color="inherit">
+                            <Menu />
+                        </IconButton>
+                        <Box>
+                            <MenuButton color="inherit">Login</MenuButton>
+                            <MenuButton color="inherit">Logout</MenuButton>
+                            <MenuButton color="inherit">FAQ</MenuButton>
+                            <Switch checked={isDark} onChange={() => setIsDark(!isDark)} />
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+                <Container>
+                    <Grid2 container sx={{ p: "15px 0" }}>
+                        <AddItemForm addItem={addTodolist} />
+                    </Grid2>
+                    <Grid2 container spacing={4}>
+                        {
+                            todolists.map(tl => {
 
-        <Container>
+                                let filteredTasks: Array<TaskType> = tasks[tl.id];
 
-            <Grid2 container spacing={2}>
+                                if (tl.filter === "active") {
+                                    filteredTasks = filteredTasks.filter(t => !t.isDone)
+                                }
+                                if (tl.filter === "completed") {
+                                    filteredTasks = filteredTasks.filter(t => t.isDone)
+                                }
 
-                <div>
-                    <h3>Add todolist</h3>
-                    <AddItemForm addItem={addTodolist} />
-                </div>
 
-                {
-                    todolists.map(tl => {
+                                return (
 
-                        let filteredTasks: Array<TaskType> = tasks[tl.id];
+                                    <Todolist
+                                        todolistId={tl.id}
+                                        key={tl.id}
+                                        title={tl.title}
+                                        tasks={filteredTasks}
+                                        removeTask={removeTask}
+                                        changeTodolistFilter={changeTodolistFilter}
+                                        addTask={addTask}
+                                        changeStatus={changeStatus}
+                                        filter={tl.filter}
+                                        removeTodolist={removeTodolist}
+                                        changeTodolistTitle={changeTodolistTitle}
+                                        changeTaskTitle={changeTaskTitle}
+                                    />
 
-                        if (tl.filter === "active") {
-                            filteredTasks = filteredTasks.filter(t => !t.isDone)
+                                )
+                            })
                         }
-                        if (tl.filter === "completed") {
-                            filteredTasks = filteredTasks.filter(t => t.isDone)
-                        }
 
-
-                        return (
-                            <Todolist
-                                todolistId={tl.id}
-                                key={tl.id}
-                                title={tl.title}
-                                tasks={filteredTasks}
-                                removeTask={removeTask}
-                                changeTodolistFilter={changeTodolistFilter}
-                                addTask={addTask}
-                                changeStatus={changeStatus}
-                                filter={tl.filter}
-                                removeTodolist={removeTodolist}
-                                changeTodolistTitle={changeTodolistTitle}
-                                changeTaskTitle={changeTaskTitle}
-                            />
-                        )
-                    })
-                }
-
-            </Grid2>
-        </Container>
-
+                    </Grid2>
+                </Container>
+            </ThemeProvider>
+        </div>
     );
 }
 
