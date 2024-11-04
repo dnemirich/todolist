@@ -30,54 +30,6 @@ export type TasksStateType = {
 function App() {
     // BLL:
 
-    // const todolistTitle = "What to learn";
-    // const todolistTitle_2 = "What to buy";
-    //
-    // const tasks_1: Array<TaskType> = [
-    //     {
-    //         id: v1(),
-    //         title: "HTML & CSS",
-    //         isDone: true,
-    //     },
-    //     {
-    //         id: v1(),
-    //         title: "JS",
-    //         isDone: true,
-    //     },
-    //     {
-    //         id: v1(),
-    //         title: "React",
-    //         isDone: false,
-    //     },
-    //     {
-    //         id: v1(),
-    //         title: "Redux",
-    //         isDone: false,
-    //     }
-    // ]
-    // const tasks_2: Array<TaskType> = [
-    //     {
-    //         id: v1(),
-    //         title: "Milk",
-    //         isDone: false,
-    //     },
-    //     {
-    //         id: v1(),
-    //         title: "Bread",
-    //         isDone: false,
-    //     },
-    //     {
-    //         id: v1(),
-    //         title: "Butter",
-    //         isDone: false,
-    //     },
-    //     {
-    //         id: v1(),
-    //         title: "Chips",
-    //         isDone: false,
-    //     },
-    // ]
-
     const todolistid_1 = v1();
     const todolistid_2 = v1();
 
@@ -85,7 +37,6 @@ function App() {
         { id: todolistid_1, title: "What to learn", filter: "all" },
         { id: todolistid_2, title: "What to buy", filter: "all" }
     ]);
-
 
     const [tasks, setTasks] = useState<TasksStateType>(
         {
@@ -102,18 +53,10 @@ function App() {
         }
     )
 
+    // tasks functions
     const removeTask = (taskId: string, todolistId: string) => {
-
-        // // 1. make a new version of a state
-        // const newState: Array<TaskType> = tasks.filter(t => t.id !== taskId); //new state #234234
-        // // 2. give to SetState a new version of a state.
-        // setTasks(newState);
-
-
-        // new version:
         setTasks({ ...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== taskId) });
     }
-
 
     const addTask = (title: string, todolistId: string) => {
         const newTask: TaskType = {
@@ -121,10 +64,6 @@ function App() {
             title: title,
             isDone: false,
         }
-
-        // setTasks([newTask, ...tasks])
-
-        // new version
         setTasks({
             ...tasks,
             [todolistId]: [...tasks[todolistId], newTask]
@@ -132,18 +71,6 @@ function App() {
     }
 
     const changeStatus = (taskId: string, taskStatus: boolean, todolistId: string) => {
-        // let task = tasks.find((t) => t.id === taskId);
-        // if (task) {
-        //     task.isDone = taskStatus;
-        // }
-        // setTasks([...tasks]);
-
-        // другой вариант:
-        // const newState = tasks.map(t => (t.id === taskId ? {...t, isDone: taskStatus} : t))
-        // setTasks(newState);
-
-
-        // new version
         setTasks({
             ...tasks,
             [todolistId]: tasks[todolistId].map(t => (t.id === taskId ? { ...t, isDone: taskStatus } : t))
@@ -157,26 +84,21 @@ function App() {
         })
     }
 
-
     // GUI:
 
 
+    // list functions => only one function
     const changeTodolistFilter = (newFilter: FilterValuesType, todolistId: string) => {
-        // setFilter(newFilter)
-
-        // new version
         setTodolists(
             todolists.map(tl => tl.id === todolistId ? { ...tl, filter: newFilter } : tl)
         )
     }
-
 
     const removeTodolist = (todolistId: string) => {
         setTodolists(todolists.filter(tl => tl.id !== todolistId))
 
         delete tasks[todolistId] // можно и без стейта сделать, потому что нам уже не надо отображать тудулист
     }
-
 
     const addTodolist = (title: string) => {
         const todolistID = v1();
