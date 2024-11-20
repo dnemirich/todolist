@@ -1,14 +1,13 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
-// import { Button } from "./Button";
-import { IconButton, TextField } from "@mui/material"
-import { AddBox } from '@mui/icons-material';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from "@mui/material"
+import {AddBox} from '@mui/icons-material';
 
-type AddItemFormProps = {
+type Props = {
     addItem: (title: string) => void
 }
 
 
-export const AddItemForm = ({ addItem }: AddItemFormProps) => {
+export const AddItemForm = ({ addItem }: Props) => {
     const [itemTitle, setItemTitle] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
 
