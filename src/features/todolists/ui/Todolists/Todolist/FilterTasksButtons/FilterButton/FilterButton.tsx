@@ -1,23 +1,19 @@
 import { Button } from "@mui/material"
-import type {FilterValuesType} from "../../../../../model/todolists-reducer";
-
+import type { FilterValuesType } from "../../../../../model/todolists-reducer"
 
 type Props = {
-    title: string
-    filter: FilterValuesType
-    activeFilterValue: FilterValuesType
-    onClickHandler: () => void
+  title: string
+  filter: FilterValuesType
+  activeFilterValue: FilterValuesType
+  onClickHandler: () => void
 }
 
+export const FilterButton = ({ title, filter, activeFilterValue, onClickHandler }: Props) => {
+  const color = filter === activeFilterValue ? "secondary" : "primary"
 
-export const FilterButton = ({ title, filter, activeFilterValue, onClickHandler }:Props) => {
-    const color = filter === activeFilterValue ? "secondary" : "primary";
-
-    return (
-        <Button
-            color={color}
-            size="small"
-            variant="contained"
-            onClick={onClickHandler}>{title}</Button>
-    )
+  return (
+    <Button color={color} size="small" variant="contained" onClick={onClickHandler}>
+      {title}
+    </Button>
+  )
 }
