@@ -4,14 +4,17 @@ import React, { ChangeEvent, useState } from "react"
 type Props = {
   title: string
   changeTitle: (newTitle: string) => void
+  disabled?: boolean
 }
 
-export const EditableSpan = ({ title, changeTitle }: Props) => {
+export const EditableSpan = ({ title, changeTitle, disabled }: Props) => {
   const [editMode, setEditMode] = useState<boolean>(false)
 
   const [itemTitle, setItemTitle] = useState(title)
 
-  const onEditMode = () => setEditMode(true)
+  const onEditMode = () => {
+    if (!disabled) setEditMode(true)
+  }
 
   const offEditMode = () => {
     changeTitle(itemTitle)
@@ -29,6 +32,7 @@ export const EditableSpan = ({ title, changeTitle }: Props) => {
       value={itemTitle}
       onBlur={offEditMode}
       onChange={changeItemTitleHandler}
+      disabled={disabled}
       autoFocus
     />
   ) : (

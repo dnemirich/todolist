@@ -28,8 +28,12 @@ export const TodolistTitle = ({ todolist }: Props) => {
   return (
     <div>
       <Typography variant="h6" align="center">
-        <EditableSpan title={todolist.title} changeTitle={changeTodolistTitle} />
-        <IconButton onClick={removeTodolist}>
+        <EditableSpan
+          title={todolist.title}
+          changeTitle={changeTodolistTitle}
+          disabled={todolist.entityStatus === "loading"}
+        />
+        <IconButton onClick={removeTodolist} disabled={todolist.entityStatus === "loading"}>
           <DeleteRounded />
         </IconButton>
       </Typography>

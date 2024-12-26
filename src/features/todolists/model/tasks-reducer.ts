@@ -1,8 +1,11 @@
-import type { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
+import { addTodolistAC, type AddTodolistActionType, type RemoveTodolistActionType } from "./todolists-reducer"
 import { tasksApi } from "../api/tasksApi"
 import type { AppThunk } from "../../../app/store"
 import type { BaseTask, DomainTask } from "../api/tasksApi.types"
-import { TaskStatus } from "../lib/enums"
+import { ResultCode, TaskStatus } from "../lib/enums"
+import { changeStatusAC, setAppErrorAC } from "../../../app/app-reducer"
+import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
+import { handleServerAppError } from "common/utils/handleServerAppError"
 
 export type TasksStateType = {
   [todolistId: string]: DomainTask[]
@@ -10,7 +13,7 @@ export type TasksStateType = {
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (tasks: TasksStateType = initialState, action: ActionsType): TasksStateType => {
+export const tasksReducer = (tasks: TasksStateType = initialState, action: TasksActionsType): TasksStateType => {
   switch (action.type) {
     case "SET-TASKS": {
       const stateCopy = { ...tasks }
@@ -94,7 +97,7 @@ export type AddTaskActionType = ReturnType<typeof addTaskAC>
 export type SetTasksActionType = ReturnType<typeof setTasksAC>
 export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
 
-type ActionsType =
+export type TasksActionsType =
   | RemoveTaskActionType
   | AddTaskActionType
   | RemoveTodolistActionType
@@ -107,25 +110,54 @@ type ActionsType =
 export const fetchTasksTC =
   (id: string): AppThunk =>
   (dispatch) => {
-    tasksApi.getTasks(id).then((res) => {
-      dispatch(setTasksAC({ todolistId: id, tasks: res.data.items }))
-    })
+    dispatch(changeStatusAC("loading"))
+    tasksApi
+      .getTasks(id)
+      .then((res) => {
+        dispatch(changeStatusAC("succeeded"))
+        dispatch(setTasksAC({ todolistId: id, tasks: res.data.items }))
+      })
+      .catch((error) => {
+        handleServerNetworkError(error, dispatch)
+      })
   }
 
 export const removeTaskTC =
   (args: { todolistId: string; taskId: string }): AppThunk =>
   (dispatch) => {
-    tasksApi.removeTask(args).then((res) => {
-      dispatch(removeTaskAC(args))
-    })
+    dispatch(changeStatusAC("loading"))
+    tasksApi
+      .removeTask(args)
+      .then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+          dispatch(changeStatusAC("succeeded"))
+          dispatch(removeTaskAC(args))
+        } else {
+          handleServerAppError(dispatch, res.data)
+        }
+      })
+      .catch((error) => {
+        handleServerNetworkError(error, dispatch)
+      })
   }
 
 export const addTaskTC =
   (args: { title: string; todolistId: string }): AppThunk =>
   (dispatch) => {
-    tasksApi.createTask(args).then((res) => {
-      dispatch(addTaskAC({ task: res.data.data.item }))
-    })
+    dispatch(changeStatusAC("loading"))
+    tasksApi
+      .createTask(args)
+      .then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+          dispatch(addTaskAC({ task: res.data.data.item }))
+          dispatch(changeStatusAC("succeeded"))
+        } else {
+          handleServerAppError(dispatch, res.data)
+        }
+      })
+      .catch((err) => {
+        handleServerNetworkError(err, dispatch)
+      })
   }
 
 // export const updateTaskStatusTC =
@@ -158,7 +190,18 @@ export const updateTaskTC =
   (args: { task: DomainTask; partialTask: Partial<BaseTask> }): AppThunk =>
   (dispatch) => {
     // const { task, partialTask } = args
-    tasksApi.updateTask(args).then((res) => {
-      dispatch(updateTaskAC(args))
-    })
+    dispatch(changeStatusAC("loading"))
+    tasksApi
+      .updateTask(args)
+      .then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+          dispatch(changeStatusAC("succeeded"))
+          dispatch(updateTaskAC(args))
+        } else {
+          handleServerAppError(dispatch, res.data)
+        }
+      })
+      .catch((error) => {
+        handleServerNetworkError(error, dispatch)
+      })
   }

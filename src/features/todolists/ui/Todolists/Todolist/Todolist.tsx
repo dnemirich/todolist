@@ -23,7 +23,7 @@ export const Todolist = ({ todolist }: Props) => {
   return (
     <Paper sx={{ p: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
       <TodolistTitle todolist={todolist} />
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={addTask} disabled={todolist.entityStatus === "loading"} />
       <Tasks todolist={todolist} />
       <FilterTasksButtons todolist={todolist} />
     </Paper>

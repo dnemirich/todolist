@@ -39,10 +39,15 @@ export const Task = ({ task, todolist }: Props) => {
       disablePadding
     >
       <Box>
-        <Checkbox checked={task.status === TaskStatus.Completed} onChange={changeStatus} size="small" />
-        <EditableSpan title={task.title} changeTitle={changeTaskTitle} />
+        <Checkbox
+          checked={task.status === TaskStatus.Completed}
+          disabled={todolist.entityStatus === "loading"}
+          onChange={changeStatus}
+          size="small"
+        />
+        <EditableSpan title={task.title} changeTitle={changeTaskTitle} disabled={todolist.entityStatus === "loading"} />
       </Box>
-      <IconButton onClick={removeTask}>
+      <IconButton onClick={removeTask} disabled={todolist.entityStatus === "loading"}>
         <Clear fontSize="small" />
       </IconButton>
     </ListItem>

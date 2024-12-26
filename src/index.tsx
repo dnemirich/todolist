@@ -4,14 +4,16 @@ import "./index.css"
 import { App } from "./app/App"
 import { Provider } from "react-redux"
 import { store } from "./app/store"
-import { AppHttpRequests } from "./app/AppHttpRequests"
+import { BrowserRouter, Route, Routes } from "react-router"
+import { Routing } from "common/routing/Routing"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
-  <Provider store={store}>
-    <App />
-    {/*<AppHttpRequests />*/}
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
 )
 
 // If you want to start measuring performance in your app, pass a function

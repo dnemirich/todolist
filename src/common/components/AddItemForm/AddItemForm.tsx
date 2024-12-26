@@ -4,9 +4,10 @@ import { AddBox } from "@mui/icons-material"
 
 type Props = {
   addItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const AddItemForm = ({ addItem }: Props) => {
+export const AddItemForm = ({ addItem, disabled }: Props) => {
   const [itemTitle, setItemTitle] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
 
@@ -30,7 +31,7 @@ export const AddItemForm = ({ addItem }: Props) => {
     }
   }
 
-  const isTitleLengthValid = itemTitle.length < 15
+  const isTitleLengthValid = itemTitle.length < 100
 
   return (
     <div>
@@ -43,6 +44,7 @@ export const AddItemForm = ({ addItem }: Props) => {
         onKeyUp={addItemOnKeyUp}
         error={!!error}
         helperText={error}
+        disabled={disabled}
       />
       {/* <input
                 value={itemTitle}
@@ -51,7 +53,7 @@ export const AddItemForm = ({ addItem }: Props) => {
                 onKeyUp={addItemOnKeyUp}
                 className={error ? "error" : ""}
             /> */}
-      <IconButton onClick={addItemHandler} disabled={!isTitleLengthValid}>
+      <IconButton onClick={addItemHandler} disabled={disabled}>
         <AddBox></AddBox>
       </IconButton>
       {/* <Button

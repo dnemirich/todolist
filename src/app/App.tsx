@@ -5,6 +5,8 @@ import { Header } from "common/components/Header/Header"
 import { Main } from "./Main"
 import { useAppSelector } from "./hooks"
 import { selectThemeMode } from "./app-selectors"
+import { ErrorSnackbar } from "common/components"
+import { Routing } from "common/routing/Routing"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -15,7 +17,8 @@ export const App = () => {
         {/* reset browser default styles */}
         <CssBaseline />
         <Header />
-        <Main />
+        <Routing />
+        <ErrorSnackbar />
       </ThemeProvider>
     </div>
   )
