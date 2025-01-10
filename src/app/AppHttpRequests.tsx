@@ -4,7 +4,7 @@ import { AddItemForm } from "../common/components/AddItemForm/AddItemForm"
 import { EditableSpan } from "../common/components/EditableSpan/EditableSpan"
 import type { Todolist } from "../features/todolists/api/todolistsApi.types"
 import { type BaseTask, type DomainTask } from "../features/todolists/api/tasksApi.types"
-import { todolistsApi } from "../features/todolists/api/todolistsApi"
+import { _todolistsApi } from "../features/todolists/api/todolistsApi"
 import { TaskStatus } from "../features/todolists/lib/enums"
 import { tasksApi } from "../features/todolists/api/tasksApi"
 
@@ -13,7 +13,7 @@ export const AppHttpRequests = () => {
   const [tasks, setTasks] = useState<{ [key: string]: DomainTask[] }>({})
 
   useEffect(() => {
-    todolistsApi.getTodolists().then((res) => {
+    _todolistsApi.getTodolists().then((res) => {
       const todolists = res.data
       setTodolists(todolists)
       todolists.forEach((tl) => {
@@ -28,18 +28,18 @@ export const AppHttpRequests = () => {
   }, [])
 
   const createTodolistHandler = (title: string) => {
-    todolistsApi.createTodolist(title).then((res) => {
+    _todolistsApi.createTodolist(title).then((res) => {
       const newTodo = res.data.data.item
       setTodolists([newTodo, ...todolists])
     })
   }
 
   const removeTodolistHandler = (id: string) => {
-    todolistsApi.deleteTodolist(id).then(() => setTodolists(todolists.filter((tl) => tl.id !== id)))
+    _todolistsApi.deleteTodolist(id).then(() => setTodolists(todolists.filter((tl) => tl.id !== id)))
   }
 
   const updateTodolistHandler = (id: string, title: string) => {
-    todolistsApi
+    _todolistsApi
       .updateTodolist({ id, title })
       .then(() => setTodolists(todolists.map((tl) => (tl.id === id ? { ...tl, title } : tl))))
   }

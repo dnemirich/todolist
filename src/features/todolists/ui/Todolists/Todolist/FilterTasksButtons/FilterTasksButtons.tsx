@@ -2,7 +2,7 @@ import React from "react"
 import { filterButtonsContainerSx } from "./FilterTasksButton.styles"
 import { FilterButton } from "./FilterButton/FilterButton"
 import { Box } from "@mui/material"
-import { changeTodolistFilterAC, type FilterValuesType, type DomainTodolist } from "../../../../model/todolists-reducer"
+import { changeTodolistFilter, type FilterValuesType, type DomainTodolist } from "../../../../model/todolistsSlice"
 import { useAppDispatch } from "../../../../../../app/hooks"
 
 type Props = {
@@ -13,7 +13,7 @@ export const FilterTasksButtons = ({ todolist }: Props) => {
   const dispatch = useAppDispatch()
 
   const changeFilterTasksHandler = (newFilter: FilterValuesType) => {
-    dispatch(changeTodolistFilterAC({ newFilter, todolistId: todolist.id }))
+    dispatch(changeTodolistFilter({ newFilter, todolistId: todolist.id }))
   }
 
   return (

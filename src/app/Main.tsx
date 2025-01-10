@@ -1,12 +1,13 @@
 import React, { useEffect } from "react"
 import { Container, Grid2 } from "@mui/material"
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
-import { addTodolistAC, addTodolistTC } from "../features/todolists/model/todolists-reducer"
+import { addTodolistTC } from "../features/todolists/model/todolistsSlice"
 import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
 import { useAppDispatch, useAppSelector } from "./hooks"
 import { useNavigate } from "react-router"
-import { selectIsLoggedIn } from "../features/auth/model/auth-selectors"
+import { selectIsLoggedIn } from "../features/auth/model/authSlice"
 import { Path } from "common/routing/Routing"
+import { useAddTodolistMutation } from "../features/todolists/api/todolistsApi"
 
 export const Main = () => {
   const dispatch = useAppDispatch()
@@ -17,8 +18,10 @@ export const Main = () => {
     if (!isLoggedIn) navigate(Path.Login)
   }, [isLoggedIn])
 
+  const [addTodo] = useAddTodolistMutation()
   const addTodolist = (title: string) => {
-    dispatch(addTodolistTC({ title }))
+    // dispatch(addTodolistTC({ title }))
+    addTodo(title)
   }
 
   return (

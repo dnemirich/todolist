@@ -1,12 +1,12 @@
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import { Paper } from "@mui/material"
-import { addTaskAC, addTaskTC } from "../../../model/tasks-reducer"
+import { addTaskTC } from "../../../model/tasksSlice"
 
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
 
 import { Tasks } from "./Tasks/Tasks"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
-import type { DomainTodolist } from "../../../model/todolists-reducer"
+import type { DomainTodolist } from "../../../model/todolistsSlice"
 import { useAppDispatch } from "../../../../../app/hooks"
 
 type Props = {

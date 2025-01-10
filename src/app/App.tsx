@@ -3,12 +3,12 @@ import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material"
 import { getTheme } from "common/theme"
 import { Header } from "common/components/Header/Header"
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { selectThemeMode } from "./app-selectors"
+import { selectThemeMode } from "./appSlice"
 import { ErrorSnackbar } from "common/components"
 import { Routing } from "common/routing/Routing"
 import { useEffect } from "react"
-import { initializeAppTC } from "../features/auth/model/auth-reducer"
-import { selectIsInitialized } from "../features/auth/model/auth-selectors"
+import { initializeAppTC, selectIsInitialized } from "../features/auth/model/authSlice"
+
 import s from "./App.module.css"
 
 export const App = () => {

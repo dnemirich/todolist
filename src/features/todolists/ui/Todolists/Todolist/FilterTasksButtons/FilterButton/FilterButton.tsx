@@ -1,5 +1,5 @@
 import { Button } from "@mui/material"
-import type { FilterValuesType } from "../../../../../model/todolists-reducer"
+import type { FilterValuesType } from "../../../../../model/todolistsSlice"
 
 type Props = {
   title: string

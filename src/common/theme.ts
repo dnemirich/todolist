@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material"
 import { lightGreen } from "@mui/material/colors"
-import { ThemeMode } from "../app/app-reducer"
+import { ThemeMode } from "../app/appSlice"
 
 export const getTheme = (themeMode: ThemeMode) => {
   return createTheme({

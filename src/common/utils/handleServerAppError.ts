@@ -1,10 +1,10 @@
-import { changeStatusAC, setAppErrorAC } from "../../app/app-reducer"
+import { changeStatus, setAppError } from "../../app/appSlice"
 import type { AppDispatch } from "../../app/store"
 import type { Response } from "common/types"
 
 export const handleServerAppError = <T>(dispatch: AppDispatch, data: Response<T>) => {
-  dispatch(setAppErrorAC(data.messages.length ? data.messages[0] : "Some error occurred"))
-  dispatch(changeStatusAC("failed"))
+  dispatch(setAppError({ error: data.messages.length ? data.messages[0] : "Some error occurred" }))
+  dispatch(changeStatus({ status: "failed" }))
 }
 
 // функции-дженерики
