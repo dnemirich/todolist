@@ -6,8 +6,9 @@ import { removeTaskTC, updateTaskTC } from "../../../../../model/tasksSlice"
 import type { DomainTodolist } from "../../../../../model/todolistsSlice"
 import { ChangeEvent } from "react"
 import { useAppDispatch } from "../../../../../../../app/hooks"
-import type { DomainTask } from "../../../../../api/tasksApi.types"
+import type { BaseTask, DomainTask } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../../lib/enums"
+import { useRemoveTaskMutation, useUpdateTaskMutation } from "../../../../../api/tasksApi"
 
 type Props = {
   task: DomainTask
@@ -17,19 +18,27 @@ type Props = {
 export const Task = ({ task, todolist }: Props) => {
   const dispatch = useAppDispatch()
 
+  const [remove] = useRemoveTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
+
   const removeTask = () => {
-    dispatch(removeTaskTC({ todolistId: todolist.id, taskId: task.id }))
+    // dispatch(removeTaskTC({ todolistId: todolist.id, taskId: task.id }))
+    remove({ todolistId: todolist.id, taskId: task.id })
   }
 
   const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
     let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+    const model: BaseTask = { ...task, status }
     // dispatch(updateTaskStatusTC({ taskId: task.id, status, todolistId: todolist.id }))
-    dispatch(updateTaskTC({ task, partialTask: { status } }))
+    // dispatch(updateTaskTC({ task, partialTask: { status } }))
+    updateTask({ taskId: task.id, todolistId: todolist.id, model })
   }
 
   const changeTaskTitle = (title: string) => {
     // dispatch(updateTaskTitleTC({ taskId: task.id, title, todolistId: todolist.id }))
-    dispatch(updateTaskTC({ task, partialTask: { title } }))
+    // dispatch(updateTaskTC({ task, partialTask: { title } }))
+    const model: BaseTask = { ...task, title }
+    updateTask({ taskId: task.id, todolistId: todolist.id, model })
   }
 
   return (

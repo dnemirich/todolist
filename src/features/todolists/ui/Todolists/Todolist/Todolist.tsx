@@ -8,16 +8,19 @@ import { Tasks } from "./Tasks/Tasks"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import type { DomainTodolist } from "../../../model/todolistsSlice"
 import { useAppDispatch } from "../../../../../app/hooks"
+import { useCreateTaskMutation } from "../../../api/tasksApi"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const Todolist = ({ todolist }: Props) => {
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
+  const [add] = useCreateTaskMutation()
   const addTask = (title: string) => {
-    dispatch(addTaskTC({ title, todolistId: todolist.id }))
+    // dispatch(addTaskTC({ title, todolistId: todolist.id }))
+    add({ title, todolistId: todolist.id })
   }
 
   return (

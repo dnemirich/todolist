@@ -5,9 +5,10 @@ import { addTodolistTC } from "../features/todolists/model/todolistsSlice"
 import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
 import { useAppDispatch, useAppSelector } from "./hooks"
 import { useNavigate } from "react-router"
-import { selectIsLoggedIn } from "../features/auth/model/authSlice"
+// import { selectIsLoggedIn } from "../features/auth/model/authSlice"
 import { Path } from "common/routing/Routing"
 import { useAddTodolistMutation } from "../features/todolists/api/todolistsApi"
+import { selectIsLoggedIn } from "./appSlice"
 
 export const Main = () => {
   const dispatch = useAppDispatch()

@@ -1,4 +1,4 @@
-import { tasksApi } from "../api/tasksApi"
+import { _tasksApi } from "../api/tasksApi"
 import type { AppThunk } from "../../../app/store"
 import type { BaseTask, DomainTask } from "../api/tasksApi.types"
 import { ResultCode } from "../lib/enums"
@@ -66,7 +66,7 @@ export const fetchTasksTC =
   (id: string): AppThunk =>
   (dispatch) => {
     dispatch(changeStatus({ status: "loading" }))
-    tasksApi
+    _tasksApi
       .getTasks(id)
       .then((res) => {
         dispatch(changeStatus({ status: "succeeded" }))
@@ -81,7 +81,7 @@ export const removeTaskTC =
   (args: { todolistId: string; taskId: string }): AppThunk =>
   (dispatch) => {
     dispatch(changeStatus({ status: "loading" }))
-    tasksApi
+    _tasksApi
       .removeTask(args)
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
@@ -100,7 +100,7 @@ export const addTaskTC =
   (args: { title: string; todolistId: string }): AppThunk =>
   (dispatch) => {
     dispatch(changeStatus({ status: "loading" }))
-    tasksApi
+    _tasksApi
       .createTask(args)
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
@@ -120,7 +120,7 @@ export const updateTaskTC =
   (dispatch) => {
     // const { task, partialTask } = args
     dispatch(changeStatus({ status: "loading" }))
-    tasksApi
+    _tasksApi
       .updateTask(args)
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {

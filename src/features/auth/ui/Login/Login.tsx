@@ -8,20 +8,17 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import { getTheme } from "common/theme"
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
-import { selectThemeMode } from "../../../../app/appSlice"
+import { selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "../../../../app/appSlice"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-import { loginTC } from "../../model/authSlice"
-import { selectIsLoggedIn } from "../../model/authSlice"
+// import { loginTC } from "../../model/authSlice"
+// import { selectIsLoggedIn } from "../../model/authSlice"
 import { useNavigate } from "react-router"
 import { Path } from "common/routing/Routing"
 import { useEffect } from "react"
-
-export type Inputs = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+import { useLoginMutation } from "../../api/authApi"
+import { ResultCode } from "../../../todolists/lib/enums"
+import type { LoginArgs } from "../../api/authApi.types"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -29,6 +26,8 @@ export const Login = () => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const navigate = useNavigate()
+
+  const [login] = useLoginMutation()
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -39,15 +38,22 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     control,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+  } = useForm<LoginArgs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(loginTC(data))
-    reset()
+  const onSubmit: SubmitHandler<LoginArgs> = (data) => {
+    login(data)
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedIn({ isLoggedIn: true }))
+          localStorage.setItem("sn-token", res.data.data.token)
+        }
+      })
+      .finally(() => {
+        reset()
+      })
   }
 
   return (

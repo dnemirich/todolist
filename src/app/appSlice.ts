@@ -16,11 +16,13 @@ export const appSlice = createSlice({
     themeMode: "light" as ThemeMode,
     status: "idle" as RequestStatus,
     error: null as string | null,
+    isLoggedIn: false,
   },
   selectors: {
     selectThemeMode: (state) => state.themeMode,
     selectStatus: (state) => state.status,
     selectError: (state) => state.error,
+    selectIsLoggedIn: (state) => state.isLoggedIn,
   },
   reducers: (create) => ({
     changeTheme: create.reducer<{ themeMode: ThemeMode }>((state, action) => {
@@ -32,12 +34,15 @@ export const appSlice = createSlice({
     setAppError: create.reducer<{ error: string | null }>((state, action) => {
       state.error = action.payload.error
     }),
+    setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
+      state.isLoggedIn = action.payload.isLoggedIn
+    }),
   }),
 })
 
 export const appReducer = appSlice.reducer
-export const { changeTheme, changeStatus, setAppError } = appSlice.actions
-export const { selectThemeMode, selectStatus, selectError } = appSlice.selectors
+export const { changeTheme, changeStatus, setAppError, setIsLoggedIn } = appSlice.actions
+export const { selectThemeMode, selectStatus, selectError, selectIsLoggedIn } = appSlice.selectors
 type AppInitialState = ReturnType<typeof appSlice.getInitialState>
 
 // export const appReducer = (state: InitialState = initialState, action: ActionsType): InitialState => {
