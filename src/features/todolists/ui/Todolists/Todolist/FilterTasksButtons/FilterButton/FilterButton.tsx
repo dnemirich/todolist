@@ -1,10 +1,10 @@
 import { Button } from "@mui/material"
-import type { FilterValuesType } from "../../../../../model/todolistsSlice"
+import type { FilterValues } from "../../../../../lib/types/types"
 
 type Props = {
   title: string
-  filter: FilterValuesType
-  activeFilterValue: FilterValuesType
+  filter: FilterValues
+  activeFilterValue: FilterValues
   onClickHandler: () => void
 }
 

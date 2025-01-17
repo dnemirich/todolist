@@ -1,27 +1,37 @@
 import { List } from "@mui/material"
-import { fetchTasksTC, selectTasks } from "../../../../model/tasksSlice"
-import { type DomainTodolist } from "../../../../model/todolistsSlice"
 import { Task } from "./Task/Task"
-import { useAppDispatch, useAppSelector } from "app/hooks"
-import { useEffect } from "react"
-import type { DomainTask } from "../../../../api/tasksApi.types"
+import { useAppDispatch } from "app/hooks"
 import { TaskStatus } from "../../../../lib/enums"
 import { useGetTasksQuery } from "../../../../api/tasksApi"
+import { TasksSkeleton } from "../../../skeletons/TasksSkeleton/TasksSkeleton"
+import type { DomainTodolist } from "../../../../lib/types/types"
 
 type Props = {
   todolist: DomainTodolist
 }
 
-export const Tasks = ({ todolist }: Props) => {
-  // const tasks = useAppSelector(selectTasks)
-  // const dispatch = useAppDispatch()
-  // let filteredTasks: Array<DomainTask> = tasks[todolist.id]
-  //
-  // useEffect(() => {
-  //   dispatch(fetchTasksTC(todolist.id))
-  // }, [])
+type ErrorData = {
+  status: number
+  data: {
+    message: string
+  }
+}
 
-  const { data: tasks } = useGetTasksQuery(todolist.id)
+export const Tasks = ({ todolist }: Props) => {
+  const dispatch = useAppDispatch()
+
+  const { data: tasks, isLoading, isError, error } = useGetTasksQuery(todolist.id)
+
+  // useEffect(() => {
+  //   if (error) {
+  //     let errMsg = "Some error occurred"
+  //     if ("data" in error) {
+  //       const errData = error.data as ErrorData
+  //       dispatch(setAppError({ error: errData.data.message }))
+  //     }
+  //   }
+  // }, [error])
+
   let filteredTasks = tasks?.items
 
   if (todolist.filter === "active") {
@@ -29,6 +39,9 @@ export const Tasks = ({ todolist }: Props) => {
   }
   if (todolist.filter === "completed") {
     filteredTasks = filteredTasks?.filter((t) => t.status === TaskStatus.Completed)
+  }
+  if (isLoading) {
+    return <TasksSkeleton />
   }
 
   return filteredTasks?.length === 0 ? (

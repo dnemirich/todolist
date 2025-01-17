@@ -6,7 +6,6 @@ import { selectError } from "../../../app/appSlice"
 import { setAppError } from "../../../app/appSlice"
 
 export const ErrorSnackbar = () => {
-  // const [open, setOpen] = useState(true)
   const error = useAppSelector(selectError)
   const dispatch = useAppDispatch()
 

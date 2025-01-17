@@ -7,8 +7,6 @@ import { selectThemeMode, setIsLoggedIn } from "./appSlice"
 import { ErrorSnackbar } from "common/components"
 import { Routing } from "common/routing/Routing"
 import { useEffect, useState } from "react"
-// import { initializeAppTC, selectIsInitialized, setIsLoggedIn } from "../features/auth/model/authSlice"
-
 import s from "./App.module.css"
 import { useMeQuery } from "../features/auth/api/authApi"
 import { ResultCode } from "../features/todolists/lib/enums"
@@ -17,11 +15,6 @@ export const App = () => {
   const [isInitialized, setIsInitialized] = useState(false)
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
-  // const isInitialized = useAppSelector(selectIsInitialized)
-
-  // useEffect(() => {
-  //   dispatch(initializeAppTC())
-  // }, [])
 
   const { data, isLoading } = useMeQuery()
   useEffect(() => {

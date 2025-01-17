@@ -1,15 +1,11 @@
 import { AppBar, Box, IconButton, LinearProgress, Switch, Toolbar } from "@mui/material"
 import { Menu } from "@mui/icons-material"
 import { MenuButton } from "../MenuButton/MenuButton"
-import { changeTheme, selectIsLoggedIn, setIsLoggedIn } from "../../../app/appSlice"
+import { changeTheme, selectIsLoggedIn, selectStatus, selectThemeMode, setIsLoggedIn } from "../../../app/appSlice"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectStatus, selectThemeMode } from "../../../app/appSlice"
 import { useLogoutMutation } from "../../../features/auth/api/authApi"
 import { ResultCode } from "../../../features/todolists/lib/enums"
-import { clearTodosData } from "../../../features/todolists/model/todolistsSlice"
-import { clearData } from "../../../features/todolists/model/tasksSlice"
-// import { selectIsLoggedIn } from "../../../features/auth/model/authSlice"
-// import { logoutTC } from "../../../features/auth/model/authSlice"
+import { baseApi } from "../../../app/baseApi"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -24,15 +20,17 @@ export const Header = () => {
   const [logout] = useLogoutMutation()
 
   const logoutHandler = () => {
-    // dispatch(logoutTC())
-    logout().then((res) => {
-      if (res.data?.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedIn({ isLoggedIn: false }))
-        localStorage.removeItem("sn-token")
-        dispatch(clearData())
-        dispatch(clearTodosData())
-      }
-    })
+    logout()
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedIn({ isLoggedIn: false }))
+          localStorage.removeItem("sn-token")
+          // dispatch(baseApi.util.resetApiState()) // первый вариант зачищения стейта
+        }
+      })
+      .then((res) => {
+        dispatch(baseApi.util.invalidateTags(["Todolist", "Task"])) // второй способ зачистить стейт - инвалидировать конкретные теги
+      })
   }
   return (
     <AppBar position="static" sx={{ marginBottom: "50px" }}>

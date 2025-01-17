@@ -1,9 +1,9 @@
 import type { Todolist } from "./todolistsApi.types"
 import type { Response } from "common/types/types"
-import { instance } from "../../../common/instance/instance"
-import { type BaseQueryMeta, type BaseQueryResult, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { DomainTodolist } from "../model/todolistsSlice"
+// import { instance } from "../../../common/instance/instance"
+
 import { baseApi } from "../../../app/baseApi"
+import type { DomainTodolist } from "../lib/types/types"
 
 export const todolistApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -49,20 +49,20 @@ export const {
   useUpdateTodolistMutation,
 } = todolistApi
 
-export const _todolistsApi = {
-  getTodolists: () => {
-    return instance.get<Todolist[]>("todo-lists")
-  },
-
-  createTodolist: (title: string) => {
-    return instance.post<Response<{ item: Todolist }>>("todo-lists", { title })
-  },
-
-  deleteTodolist: (id: string) => {
-    return instance.delete<Response>(`todo-lists/${id}`)
-  },
-
-  updateTodolist: (payload: { id: string; title: string }) => {
-    return instance.put<Response>(`todo-lists/${payload.id}`, { title: payload.title })
-  },
-}
+// export const _todolistsApi = {
+//   getTodolists: () => {
+//     return instance.get<Todolist[]>("todo-lists")
+//   },
+//
+//   createTodolist: (title: string) => {
+//     return instance.post<Response<{ item: Todolist }>>("todo-lists", { title })
+//   },
+//
+//   deleteTodolist: (id: string) => {
+//     return instance.delete<Response>(`todo-lists/${id}`)
+//   },
+//
+//   updateTodolist: (payload: { id: string; title: string }) => {
+//     return instance.put<Response>(`todo-lists/${payload.id}`, { title: payload.title })
+//   },
+// }
